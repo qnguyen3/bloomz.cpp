@@ -235,7 +235,7 @@ bool bloom_model_quantize(const std::string & fname_inp, const std::string & fna
                     case GGML_TYPE_Q5_1:
                         {
                             cur_size = ggml_quantize_q5_1(data_f32.data(), work.data(), nelements, ne[0], QK, hist_cur.data());
-                        }
+                        } break;
                     default:
                         {
                             fprintf(stderr, "%s: unsupported quantization type %d\n", __func__, type);
