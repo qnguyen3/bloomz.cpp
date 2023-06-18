@@ -38,11 +38,6 @@ bool bloom_model_quantize(const std::string & fname_inp, const std::string & fna
         default: fprintf(stderr, "%s: invalid quantization type %d\n", __func__, itype); return 1;
     };
 
-    if (type != GGML_TYPE_Q4_0 && type != GGML_TYPE_Q4_1) {
-        fprintf(stderr, "%s: invalid quantization type %d\n", __func__, type);
-        return false;
-    }
-
     gpt_vocab vocab;
 
     printf("%s: loading model from '%s'\n", __func__, fname_inp.c_str());
@@ -162,7 +157,7 @@ bool bloom_model_quantize(const std::string & fname_inp, const std::string & fna
             finp.read (&name[0], length);
 
             {
-                static const char * ftype_str[] = { "f32", "f16", "q4_0", "q4_1", };
+                static const char * ftype_str[] = { "f32", "f16", "q4_0", "q4_1", "q5_1"};
                 printf("%48s - [%5d, %5d], type = %6s ", name.data(), ne[0], ne[1], ftype_str[ftype]);
             }
 
@@ -291,10 +286,11 @@ bool bloom_model_quantize(const std::string & fname_inp, const std::string & fna
 // ./quantize models/ggml-model-bloomz-7b1-f16.bin models/ggml-model-bloomz-7b1-f16-quant.bin 2
 //
 int main(int argc, char ** argv) {
-    if (argc != 4) {
+    if (argc != 5) {
         fprintf(stderr, "usage: %s model-f32.bin model-quant.bin type\n", argv[0]);
         fprintf(stderr, "  type = 2 - q4_0\n");
         fprintf(stderr, "  type = 3 - q4_1\n");
+        fprintf(stderr, "  type = 4 - q5_1\n");
         return 1;
     }
 
